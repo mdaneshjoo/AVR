@@ -1,0 +1,245 @@
+
+T3.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000010c  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000160  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000160  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000190  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000028  00000000  00000000  000001cc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000672  00000000  00000000  000001f4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005a7  00000000  00000000  00000866  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000001e6  00000000  00000000  00000e0d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000034  00000000  00000000  00000ff4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000330  00000000  00000000  00001028  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000012e  00000000  00000000  00001358  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000018  00000000  00000000  00001486  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 4a 00 	call	0x94	; 0x94 <main>
+  64:	0c 94 84 00 	jmp	0x108	; 0x108 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <_Z9turnLEDonii>:
+* Author : M.Daneshjo
+*/
+
+#include <avr/io.h>
+void turnLEDon(int x ,int y){
+	PORTC= 1 << (x-1) ;
+  6c:	01 97       	sbiw	r24, 0x01	; 1
+  6e:	21 e0       	ldi	r18, 0x01	; 1
+  70:	30 e0       	ldi	r19, 0x00	; 0
+  72:	a9 01       	movw	r20, r18
+  74:	02 c0       	rjmp	.+4      	; 0x7a <_Z9turnLEDonii+0xe>
+  76:	44 0f       	add	r20, r20
+  78:	55 1f       	adc	r21, r21
+  7a:	8a 95       	dec	r24
+  7c:	e2 f7       	brpl	.-8      	; 0x76 <_Z9turnLEDonii+0xa>
+  7e:	45 bb       	out	0x15, r20	; 21
+	PORTD=~(1<<(y-1));
+  80:	61 50       	subi	r22, 0x01	; 1
+  82:	71 09       	sbc	r23, r1
+  84:	02 c0       	rjmp	.+4      	; 0x8a <_Z9turnLEDonii+0x1e>
+  86:	22 0f       	add	r18, r18
+  88:	33 1f       	adc	r19, r19
+  8a:	6a 95       	dec	r22
+  8c:	e2 f7       	brpl	.-8      	; 0x86 <_Z9turnLEDonii+0x1a>
+  8e:	20 95       	com	r18
+  90:	22 bb       	out	0x12, r18	; 18
+  92:	08 95       	ret
+
+00000094 <main>:
+}
+
+int main(void)
+{
+	DDRC=0xff;
+  94:	8f ef       	ldi	r24, 0xFF	; 255
+  96:	84 bb       	out	0x14, r24	; 20
+	DDRD=0xff;
+  98:	81 bb       	out	0x11, r24	; 17
+	
+	int x_ball=2 ;
+	int y_ball=6 ;
+	int  x_step= +1;
+	int  y_step= +1;
+  9a:	cc 24       	eor	r12, r12
+  9c:	c3 94       	inc	r12
+  9e:	d1 2c       	mov	r13, r1
+	DDRC=0xff;
+	DDRD=0xff;
+	
+	int x_ball=2 ;
+	int y_ball=6 ;
+	int  x_step= +1;
+  a0:	ee 24       	eor	r14, r14
+  a2:	e3 94       	inc	r14
+  a4:	f1 2c       	mov	r15, r1
+{
+	DDRC=0xff;
+	DDRD=0xff;
+	
+	int x_ball=2 ;
+	int y_ball=6 ;
+  a6:	06 e0       	ldi	r16, 0x06	; 6
+  a8:	10 e0       	ldi	r17, 0x00	; 0
+int main(void)
+{
+	DDRC=0xff;
+	DDRD=0xff;
+	
+	int x_ball=2 ;
+  aa:	c2 e0       	ldi	r28, 0x02	; 2
+  ac:	d0 e0       	ldi	r29, 0x00	; 0
+	
+	while (1)
+	{
+		if (x_ball==x_max)
+		{
+			x_step=-1;
+  ae:	88 24       	eor	r8, r8
+  b0:	8a 94       	dec	r8
+  b2:	99 24       	eor	r9, r9
+  b4:	9a 94       	dec	r9
+		}
+		if (x_ball==1)
+		{
+			x_step=+1;
+  b6:	aa 24       	eor	r10, r10
+  b8:	a3 94       	inc	r10
+  ba:	b1 2c       	mov	r11, r1
+	int  x_max=8;
+	int y_max=8;
+	
+	while (1)
+	{
+		if (x_ball==x_max)
+  bc:	c8 30       	cpi	r28, 0x08	; 8
+  be:	d1 05       	cpc	r29, r1
+  c0:	31 f0       	breq	.+12     	; 0xce <main+0x3a>
+		{
+			x_step=-1;
+		}
+		if (x_ball==1)
+  c2:	c1 30       	cpi	r28, 0x01	; 1
+  c4:	d1 05       	cpc	r29, r1
+  c6:	29 f4       	brne	.+10     	; 0xd2 <main+0x3e>
+		{
+			x_step=+1;
+  c8:	ea 2c       	mov	r14, r10
+  ca:	fb 2c       	mov	r15, r11
+  cc:	02 c0       	rjmp	.+4      	; 0xd2 <main+0x3e>
+	
+	while (1)
+	{
+		if (x_ball==x_max)
+		{
+			x_step=-1;
+  ce:	e8 2c       	mov	r14, r8
+  d0:	f9 2c       	mov	r15, r9
+		if (x_ball==1)
+		{
+			x_step=+1;
+		}
+		//--y-------------------------------
+		if (y_ball==y_max)
+  d2:	08 30       	cpi	r16, 0x08	; 8
+  d4:	11 05       	cpc	r17, r1
+  d6:	31 f0       	breq	.+12     	; 0xe4 <main+0x50>
+		{
+			y_step=-1;
+		}
+		if (y_ball==1)
+  d8:	01 30       	cpi	r16, 0x01	; 1
+  da:	11 05       	cpc	r17, r1
+  dc:	29 f4       	brne	.+10     	; 0xe8 <main+0x54>
+		{
+			y_step=+1;
+  de:	ca 2c       	mov	r12, r10
+  e0:	db 2c       	mov	r13, r11
+  e2:	02 c0       	rjmp	.+4      	; 0xe8 <main+0x54>
+			x_step=+1;
+		}
+		//--y-------------------------------
+		if (y_ball==y_max)
+		{
+			y_step=-1;
+  e4:	c8 2c       	mov	r12, r8
+  e6:	d9 2c       	mov	r13, r9
+		if (y_ball==1)
+		{
+			y_step=+1;
+		}
+		//-----------------------------------------
+		x_ball+=x_step;
+  e8:	ce 0d       	add	r28, r14
+  ea:	df 1d       	adc	r29, r15
+		y_ball+=y_step;
+  ec:	0c 0d       	add	r16, r12
+  ee:	1d 1d       	adc	r17, r13
+		turnLEDon(x_ball,y_ball);
+  f0:	b8 01       	movw	r22, r16
+  f2:	ce 01       	movw	r24, r28
+  f4:	0e 94 36 00 	call	0x6c	; 0x6c <_Z9turnLEDonii>
+  f8:	80 e0       	ldi	r24, 0x00	; 0
+  fa:	90 e0       	ldi	r25, 0x00	; 0
+  fc:	01 96       	adiw	r24, 0x01	; 1
+		for (long d=0;d<10000;d++){}
+  fe:	80 31       	cpi	r24, 0x10	; 16
+ 100:	27 e2       	ldi	r18, 0x27	; 39
+ 102:	92 07       	cpc	r25, r18
+ 104:	d9 f2       	breq	.-74     	; 0xbc <main+0x28>
+ 106:	fa cf       	rjmp	.-12     	; 0xfc <main+0x68>
+
+00000108 <_exit>:
+ 108:	f8 94       	cli
+
+0000010a <__stop_program>:
+ 10a:	ff cf       	rjmp	.-2      	; 0x10a <__stop_program>
