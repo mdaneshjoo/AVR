@@ -1,0 +1,683 @@
+
+PingPong.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000320  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000374  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000374  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000003a4  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000038  00000000  00000000  000003e0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000806  00000000  00000000  00000418  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005f5  00000000  00000000  00000c1e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000003b9  00000000  00000000  00001213  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000000b0  00000000  00000000  000015cc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000003b3  00000000  00000000  0000167c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000559  00000000  00000000  00001a2f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000028  00000000  00000000  00001f88  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 ad 00 	call	0x15a	; 0x15a <main>
+  64:	0c 94 8e 01 	jmp	0x31c	; 0x31c <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <_Z9TurnLEDonii>:
+		}
+	}
+		
+}
+
+void TurnLEDon(int x, int y){
+  6c:	9c 01       	movw	r18, r24
+  6e:	99 23       	and	r25, r25
+  70:	24 f4       	brge	.+8      	; 0x7a <_Z9TurnLEDonii+0xe>
+  72:	22 27       	eor	r18, r18
+  74:	33 27       	eor	r19, r19
+  76:	28 1b       	sub	r18, r24
+  78:	39 0b       	sbc	r19, r25
+	//PORTA = PORTB = PORTC = 0 ;
+	if(x<0)
+		x = -x;
+	if(x <= 8)
+  7a:	29 30       	cpi	r18, 0x09	; 9
+  7c:	31 05       	cpc	r19, r1
+  7e:	bc f4       	brge	.+46     	; 0xae <_Z9TurnLEDonii+0x42>
+	{
+		PORTB = 0 ;//col
+  80:	18 ba       	out	0x18, r1	; 24
+		PORTA = (1 << (x - 1));//col
+  82:	21 50       	subi	r18, 0x01	; 1
+  84:	31 09       	sbc	r19, r1
+  86:	81 e0       	ldi	r24, 0x01	; 1
+  88:	90 e0       	ldi	r25, 0x00	; 0
+  8a:	02 c0       	rjmp	.+4      	; 0x90 <_Z9TurnLEDonii+0x24>
+  8c:	88 0f       	add	r24, r24
+  8e:	99 1f       	adc	r25, r25
+  90:	2a 95       	dec	r18
+  92:	e2 f7       	brpl	.-8      	; 0x8c <_Z9TurnLEDonii+0x20>
+  94:	8b bb       	out	0x1b, r24	; 27
+	if (x > 8 )
+	{	
+		PORTA = 0;	//col
+		PORTB = (1 << (x - 1) - 8);//col
+	}
+	PORTC = ~(1 << (y - 1));//row
+  96:	61 50       	subi	r22, 0x01	; 1
+  98:	71 09       	sbc	r23, r1
+  9a:	81 e0       	ldi	r24, 0x01	; 1
+  9c:	90 e0       	ldi	r25, 0x00	; 0
+  9e:	02 c0       	rjmp	.+4      	; 0xa4 <_Z9TurnLEDonii+0x38>
+  a0:	88 0f       	add	r24, r24
+  a2:	99 1f       	adc	r25, r25
+  a4:	6a 95       	dec	r22
+  a6:	e2 f7       	brpl	.-8      	; 0xa0 <_Z9TurnLEDonii+0x34>
+  a8:	80 95       	com	r24
+  aa:	85 bb       	out	0x15, r24	; 21
+	
+	
+	
+}
+  ac:	08 95       	ret
+		PORTB = 0 ;//col
+		PORTA = (1 << (x - 1));//col
+	}
+	if (x > 8 )
+	{	
+		PORTA = 0;	//col
+  ae:	1b ba       	out	0x1b, r1	; 27
+		PORTB = (1 << (x - 1) - 8);//col
+  b0:	29 50       	subi	r18, 0x09	; 9
+  b2:	31 09       	sbc	r19, r1
+  b4:	81 e0       	ldi	r24, 0x01	; 1
+  b6:	90 e0       	ldi	r25, 0x00	; 0
+  b8:	02 c0       	rjmp	.+4      	; 0xbe <_Z9TurnLEDonii+0x52>
+  ba:	88 0f       	add	r24, r24
+  bc:	99 1f       	adc	r25, r25
+  be:	2a 95       	dec	r18
+  c0:	e2 f7       	brpl	.-8      	; 0xba <_Z9TurnLEDonii+0x4e>
+  c2:	88 bb       	out	0x18, r24	; 24
+  c4:	e8 cf       	rjmp	.-48     	; 0x96 <_Z9TurnLEDonii+0x2a>
+
+000000c6 <_Z11ShowRocketsi>:
+	
+}
+void ShowRockets(int y)
+{
+	int rocket = 0;
+	for(int i = y ; i < y+3 ; i++)//this for creates a rocket with 3 length 
+  c6:	9c 01       	movw	r18, r24
+  c8:	2d 5f       	subi	r18, 0xFD	; 253
+  ca:	3f 4f       	sbci	r19, 0xFF	; 255
+  cc:	82 17       	cp	r24, r18
+  ce:	93 07       	cpc	r25, r19
+  d0:	9c f4       	brge	.+38     	; 0xf8 <_Z11ShowRocketsi+0x32>
+  d2:	f9 01       	movw	r30, r18
+  d4:	20 e0       	ldi	r18, 0x00	; 0
+  d6:	30 e0       	ldi	r19, 0x00	; 0
+		rocket += (1 << i );
+  d8:	61 e0       	ldi	r22, 0x01	; 1
+  da:	70 e0       	ldi	r23, 0x00	; 0
+  dc:	ab 01       	movw	r20, r22
+  de:	08 2e       	mov	r0, r24
+  e0:	02 c0       	rjmp	.+4      	; 0xe6 <_Z11ShowRocketsi+0x20>
+  e2:	44 0f       	add	r20, r20
+  e4:	55 1f       	adc	r21, r21
+  e6:	0a 94       	dec	r0
+  e8:	e2 f7       	brpl	.-8      	; 0xe2 <_Z11ShowRocketsi+0x1c>
+  ea:	24 0f       	add	r18, r20
+  ec:	35 1f       	adc	r19, r21
+	
+}
+void ShowRockets(int y)
+{
+	int rocket = 0;
+	for(int i = y ; i < y+3 ; i++)//this for creates a rocket with 3 length 
+  ee:	01 96       	adiw	r24, 0x01	; 1
+  f0:	8e 17       	cp	r24, r30
+  f2:	9f 07       	cpc	r25, r31
+  f4:	99 f7       	brne	.-26     	; 0xdc <_Z11ShowRocketsi+0x16>
+  f6:	02 c0       	rjmp	.+4      	; 0xfc <_Z11ShowRocketsi+0x36>
+	
+	
+}
+void ShowRockets(int y)
+{
+	int rocket = 0;
+  f8:	20 e0       	ldi	r18, 0x00	; 0
+  fa:	30 e0       	ldi	r19, 0x00	; 0
+	for(int i = y ; i < y+3 ; i++)//this for creates a rocket with 3 length 
+		rocket += (1 << i );
+	PORTC = ~rocket ;
+  fc:	20 95       	com	r18
+  fe:	25 bb       	out	0x15, r18	; 21
+	PORTA = 1 ;
+ 100:	81 e0       	ldi	r24, 0x01	; 1
+ 102:	8b bb       	out	0x1b, r24	; 27
+	PORTB = 128 ;				// the second rocket 
+ 104:	80 e8       	ldi	r24, 0x80	; 128
+ 106:	88 bb       	out	0x18, r24	; 24
+ 108:	08 95       	ret
+
+0000010a <_Z8hit_failiii>:
+}
+int hit_fail(int x,int y , int Player)
+{
+	if(x == 1 || x == 16){
+ 10a:	81 30       	cpi	r24, 0x01	; 1
+ 10c:	91 05       	cpc	r25, r1
+ 10e:	11 f0       	breq	.+4      	; 0x114 <_Z8hit_failiii+0xa>
+ 110:	40 97       	sbiw	r24, 0x10	; 16
+ 112:	a1 f4       	brne	.+40     	; 0x13c <_Z8hit_failiii+0x32>
+		if(y == Player || y == Player+1 || y == Player+2 || y == Player+3)
+ 114:	64 17       	cp	r22, r20
+ 116:	75 07       	cpc	r23, r21
+ 118:	a1 f0       	breq	.+40     	; 0x142 <_Z8hit_failiii+0x38>
+ 11a:	ca 01       	movw	r24, r20
+ 11c:	01 96       	adiw	r24, 0x01	; 1
+ 11e:	68 17       	cp	r22, r24
+ 120:	79 07       	cpc	r23, r25
+ 122:	91 f0       	breq	.+36     	; 0x148 <_Z8hit_failiii+0x3e>
+ 124:	01 96       	adiw	r24, 0x01	; 1
+ 126:	68 17       	cp	r22, r24
+ 128:	79 07       	cpc	r23, r25
+ 12a:	89 f0       	breq	.+34     	; 0x14e <_Z8hit_failiii+0x44>
+ 12c:	4d 5f       	subi	r20, 0xFD	; 253
+ 12e:	5f 4f       	sbci	r21, 0xFF	; 255
+ 130:	64 17       	cp	r22, r20
+ 132:	75 07       	cpc	r23, r21
+ 134:	79 f0       	breq	.+30     	; 0x154 <_Z8hit_failiii+0x4a>
+		{
+			return 1 ; // rocket hit the ball 
+		}
+		else 
+		{
+			return -1 ; // rocket doesn't hit the ball 
+ 136:	8f ef       	ldi	r24, 0xFF	; 255
+ 138:	9f ef       	ldi	r25, 0xFF	; 255
+ 13a:	08 95       	ret
+		}
+	}else
+		return 0;  // ball is not close to the rocket 
+ 13c:	80 e0       	ldi	r24, 0x00	; 0
+ 13e:	90 e0       	ldi	r25, 0x00	; 0
+ 140:	08 95       	ret
+int hit_fail(int x,int y , int Player)
+{
+	if(x == 1 || x == 16){
+		if(y == Player || y == Player+1 || y == Player+2 || y == Player+3)
+		{
+			return 1 ; // rocket hit the ball 
+ 142:	81 e0       	ldi	r24, 0x01	; 1
+ 144:	90 e0       	ldi	r25, 0x00	; 0
+ 146:	08 95       	ret
+ 148:	81 e0       	ldi	r24, 0x01	; 1
+ 14a:	90 e0       	ldi	r25, 0x00	; 0
+ 14c:	08 95       	ret
+ 14e:	81 e0       	ldi	r24, 0x01	; 1
+ 150:	90 e0       	ldi	r25, 0x00	; 0
+ 152:	08 95       	ret
+ 154:	81 e0       	ldi	r24, 0x01	; 1
+ 156:	90 e0       	ldi	r25, 0x00	; 0
+		}
+	}else
+		return 0;  // ball is not close to the rocket 
+		
+	
+ 158:	08 95       	ret
+
+0000015a <main>:
+void TurnLEDon(int x, int y);
+void ShowRockets(int y);
+int hit_fail(int x ,int y ,  int Player); // checks if the rockets hits the ball or not 
+
+int main(void)
+{
+ 15a:	2f 92       	push	r2
+ 15c:	3f 92       	push	r3
+ 15e:	4f 92       	push	r4
+ 160:	5f 92       	push	r5
+ 162:	6f 92       	push	r6
+ 164:	7f 92       	push	r7
+ 166:	8f 92       	push	r8
+ 168:	9f 92       	push	r9
+ 16a:	af 92       	push	r10
+ 16c:	bf 92       	push	r11
+ 16e:	cf 92       	push	r12
+ 170:	df 92       	push	r13
+ 172:	ef 92       	push	r14
+ 174:	ff 92       	push	r15
+ 176:	0f 93       	push	r16
+ 178:	1f 93       	push	r17
+ 17a:	cf 93       	push	r28
+ 17c:	df 93       	push	r29
+	DDRC = 0xFF;
+ 17e:	8f ef       	ldi	r24, 0xFF	; 255
+ 180:	84 bb       	out	0x14, r24	; 20
+	DDRA = 0xFF;//col
+ 182:	8a bb       	out	0x1a, r24	; 26
+	DDRB = 0xFF;//col
+ 184:	87 bb       	out	0x17, r24	; 23
+	DDRD = 0b11110000;//4 out 4 in 
+ 186:	80 ef       	ldi	r24, 0xF0	; 240
+ 188:	81 bb       	out	0x11, r24	; 17
+	int Y_2_Player; 
+	
+	int hit = 0; 
+	
+	int win_P1 = 0 ;
+	int win_P2 = 0 ;
+ 18a:	61 2c       	mov	r6, r1
+ 18c:	71 2c       	mov	r7, r1
+	int Y_1_Player; 
+	int Y_2_Player; 
+	
+	int hit = 0; 
+	
+	int win_P1 = 0 ;
+ 18e:	41 2c       	mov	r4, r1
+ 190:	51 2c       	mov	r5, r1
+		{
+			if (X_ball == X_max){
+				X_step = -1;
+			}
+			if (X_ball == 1){
+				X_step = +1;
+ 192:	22 24       	eor	r2, r2
+ 194:	23 94       	inc	r2
+ 196:	31 2c       	mov	r3, r1
+ 198:	09 c0       	rjmp	.+18     	; 0x1ac <main+0x52>
+	
+	int win_P1 = 0 ;
+	int win_P2 = 0 ;
+	
+	
+	while(win_P1 <= 2 || win_P2 <= 2 )
+ 19a:	23 e0       	ldi	r18, 0x03	; 3
+ 19c:	42 16       	cp	r4, r18
+ 19e:	51 04       	cpc	r5, r1
+ 1a0:	2c f0       	brlt	.+10     	; 0x1ac <main+0x52>
+ 1a2:	83 e0       	ldi	r24, 0x03	; 3
+ 1a4:	68 16       	cp	r6, r24
+ 1a6:	71 04       	cpc	r7, r1
+ 1a8:	0c f0       	brlt	.+2      	; 0x1ac <main+0x52>
+ 1aa:	a3 c0       	rjmp	.+326    	; 0x2f2 <main+0x198>
+		X_ball = 4;
+		Y_ball = 6;
+		X_step = +1 ;
+		Y_step = +1 ;
+		
+		PORTA = PORTB = PORTD = 0;
+ 1ac:	12 ba       	out	0x12, r1	; 18
+ 1ae:	18 ba       	out	0x18, r1	; 24
+ 1b0:	1b ba       	out	0x1b, r1	; 27
+	
+	while(win_P1 <= 2 || win_P2 <= 2 )
+	{
+		//reset the values if ball hit the wall 
+		Y_1_Player = 2 ;
+		Y_2_Player = 2 ;
+ 1b2:	68 94       	set
+ 1b4:	aa 24       	eor	r10, r10
+ 1b6:	a1 f8       	bld	r10, 1
+ 1b8:	b1 2c       	mov	r11, r1
+	
+	
+	while(win_P1 <= 2 || win_P2 <= 2 )
+	{
+		//reset the values if ball hit the wall 
+		Y_1_Player = 2 ;
+ 1ba:	68 94       	set
+ 1bc:	cc 24       	eor	r12, r12
+ 1be:	c1 f8       	bld	r12, 1
+ 1c0:	d1 2c       	mov	r13, r1
+		Y_2_Player = 2 ;
+		X_ball = 4;
+		Y_ball = 6;
+		X_step = +1 ;
+		Y_step = +1 ;
+ 1c2:	ee 24       	eor	r14, r14
+ 1c4:	e3 94       	inc	r14
+ 1c6:	f1 2c       	mov	r15, r1
+		//reset the values if ball hit the wall 
+		Y_1_Player = 2 ;
+		Y_2_Player = 2 ;
+		X_ball = 4;
+		Y_ball = 6;
+		X_step = +1 ;
+ 1c8:	88 24       	eor	r8, r8
+ 1ca:	83 94       	inc	r8
+ 1cc:	91 2c       	mov	r9, r1
+	{
+		//reset the values if ball hit the wall 
+		Y_1_Player = 2 ;
+		Y_2_Player = 2 ;
+		X_ball = 4;
+		Y_ball = 6;
+ 1ce:	06 e0       	ldi	r16, 0x06	; 6
+ 1d0:	10 e0       	ldi	r17, 0x00	; 0
+	while(win_P1 <= 2 || win_P2 <= 2 )
+	{
+		//reset the values if ball hit the wall 
+		Y_1_Player = 2 ;
+		Y_2_Player = 2 ;
+		X_ball = 4;
+ 1d2:	c4 e0       	ldi	r28, 0x04	; 4
+ 1d4:	d0 e0       	ldi	r29, 0x00	; 0
+		Y_step = +1 ;
+		
+		PORTA = PORTB = PORTD = 0;
+		while (1)
+		{
+			if (X_ball == X_max){
+ 1d6:	c0 31       	cpi	r28, 0x10	; 16
+ 1d8:	d1 05       	cpc	r29, r1
+ 1da:	31 f0       	breq	.+12     	; 0x1e8 <main+0x8e>
+				X_step = -1;
+			}
+			if (X_ball == 1){
+ 1dc:	c1 30       	cpi	r28, 0x01	; 1
+ 1de:	d1 05       	cpc	r29, r1
+ 1e0:	39 f4       	brne	.+14     	; 0x1f0 <main+0x96>
+				X_step = +1;
+ 1e2:	82 2c       	mov	r8, r2
+ 1e4:	93 2c       	mov	r9, r3
+ 1e6:	04 c0       	rjmp	.+8      	; 0x1f0 <main+0x96>
+		
+		PORTA = PORTB = PORTD = 0;
+		while (1)
+		{
+			if (X_ball == X_max){
+				X_step = -1;
+ 1e8:	88 24       	eor	r8, r8
+ 1ea:	8a 94       	dec	r8
+ 1ec:	99 24       	eor	r9, r9
+ 1ee:	9a 94       	dec	r9
+			}
+			if (X_ball == 1){
+				X_step = +1;
+			}
+			if (Y_ball == Y_max){
+ 1f0:	08 30       	cpi	r16, 0x08	; 8
+ 1f2:	11 05       	cpc	r17, r1
+ 1f4:	31 f0       	breq	.+12     	; 0x202 <main+0xa8>
+				Y_step = -1;
+			}
+			if (Y_ball == 1){
+ 1f6:	01 30       	cpi	r16, 0x01	; 1
+ 1f8:	11 05       	cpc	r17, r1
+ 1fa:	39 f4       	brne	.+14     	; 0x20a <main+0xb0>
+				Y_step = +1;
+ 1fc:	e2 2c       	mov	r14, r2
+ 1fe:	f3 2c       	mov	r15, r3
+ 200:	04 c0       	rjmp	.+8      	; 0x20a <main+0xb0>
+			}
+			if (X_ball == 1){
+				X_step = +1;
+			}
+			if (Y_ball == Y_max){
+				Y_step = -1;
+ 202:	ee 24       	eor	r14, r14
+ 204:	ea 94       	dec	r14
+ 206:	ff 24       	eor	r15, r15
+ 208:	fa 94       	dec	r15
+			}
+			if (Y_ball == 1){
+				Y_step = +1;
+			}
+			X_ball += X_step;
+ 20a:	c8 0d       	add	r28, r8
+ 20c:	d9 1d       	adc	r29, r9
+			Y_ball += Y_step;
+ 20e:	0e 0d       	add	r16, r14
+ 210:	1f 1d       	adc	r17, r15
+			
+			TurnLEDon(X_ball, Y_ball);
+ 212:	b8 01       	movw	r22, r16
+ 214:	ce 01       	movw	r24, r28
+ 216:	0e 94 36 00 	call	0x6c	; 0x6c <_Z9TurnLEDonii>
+ 21a:	80 e0       	ldi	r24, 0x00	; 0
+ 21c:	90 e0       	ldi	r25, 0x00	; 0
+ 21e:	01 96       	adiw	r24, 0x01	; 1
+		
+			for(long i = 0 ; i < 3000; i++);
+ 220:	88 3b       	cpi	r24, 0xB8	; 184
+ 222:	2b e0       	ldi	r18, 0x0B	; 11
+ 224:	92 07       	cpc	r25, r18
+ 226:	d9 f7       	brne	.-10     	; 0x21e <main+0xc4>
+			
+			if(X_ball<=8)
+ 228:	c9 30       	cpi	r28, 0x09	; 9
+ 22a:	d1 05       	cpc	r29, r1
+ 22c:	34 f5       	brge	.+76     	; 0x27a <main+0x120>
+			{
+				if((PIND & 0b00000001) == 1 && Y_1_Player<5)
+ 22e:	80 9b       	sbis	0x10, 0	; 16
+ 230:	05 c0       	rjmp	.+10     	; 0x23c <main+0xe2>
+ 232:	85 e0       	ldi	r24, 0x05	; 5
+ 234:	c8 16       	cp	r12, r24
+ 236:	d1 04       	cpc	r13, r1
+ 238:	0c f4       	brge	.+2      	; 0x23c <main+0xe2>
+ 23a:	4b c0       	rjmp	.+150    	; 0x2d2 <main+0x178>
+					Y_1_Player ++;
+				if((PIND & 0b00000010) == 2 && Y_1_Player>0)
+ 23c:	81 9b       	sbis	0x10, 1	; 16
+ 23e:	04 c0       	rjmp	.+8      	; 0x248 <main+0xee>
+ 240:	1c 14       	cp	r1, r12
+ 242:	1d 04       	cpc	r1, r13
+ 244:	0c f4       	brge	.+2      	; 0x248 <main+0xee>
+ 246:	49 c0       	rjmp	.+146    	; 0x2da <main+0x180>
+					Y_1_Player --;
+			
+				ShowRockets(Y_1_Player);
+ 248:	c6 01       	movw	r24, r12
+ 24a:	0e 94 63 00 	call	0xc6	; 0xc6 <_Z11ShowRocketsi>
+				hit = hit_fail(X_ball ,Y_ball, Y_1_Player);
+ 24e:	a6 01       	movw	r20, r12
+ 250:	b8 01       	movw	r22, r16
+ 252:	ce 01       	movw	r24, r28
+ 254:	0e 94 85 00 	call	0x10a	; 0x10a <_Z8hit_failiii>
+					if (hit == -1  )
+ 258:	01 96       	adiw	r24, 0x01	; 1
+ 25a:	99 f5       	brne	.+102    	; 0x2c2 <main+0x168>
+					{
+						win_P2++;
+ 25c:	8f ef       	ldi	r24, 0xFF	; 255
+ 25e:	68 1a       	sub	r6, r24
+ 260:	78 0a       	sbc	r7, r24
+						PORTD += 0b00010000;
+ 262:	82 b3       	in	r24, 0x12	; 18
+ 264:	80 5f       	subi	r24, 0xF0	; 240
+ 266:	82 bb       	out	0x12, r24	; 18
+						if(win_P2 == 2 )
+ 268:	22 e0       	ldi	r18, 0x02	; 2
+ 26a:	62 16       	cp	r6, r18
+ 26c:	71 04       	cpc	r7, r1
+ 26e:	09 f0       	breq	.+2      	; 0x272 <main+0x118>
+ 270:	94 cf       	rjmp	.-216    	; 0x19a <main+0x40>
+							PORTC += 0b00100000;
+ 272:	85 b3       	in	r24, 0x15	; 21
+ 274:	80 5e       	subi	r24, 0xE0	; 224
+ 276:	85 bb       	out	0x15, r24	; 21
+ 278:	99 cf       	rjmp	.-206    	; 0x1ac <main+0x52>
+						break;
+					}
+			}
+			else
+			{
+				if((PIND & 0b00000100) == 4 && Y_2_Player<5)
+ 27a:	82 9b       	sbis	0x10, 2	; 16
+ 27c:	04 c0       	rjmp	.+8      	; 0x286 <main+0x12c>
+ 27e:	85 e0       	ldi	r24, 0x05	; 5
+ 280:	a8 16       	cp	r10, r24
+ 282:	b1 04       	cpc	r11, r1
+ 284:	74 f1       	brlt	.+92     	; 0x2e2 <main+0x188>
+					Y_2_Player ++;
+				if((PIND & 0b00001000) == 8 && Y_2_Player>0)
+ 286:	83 9b       	sbis	0x10, 3	; 16
+ 288:	03 c0       	rjmp	.+6      	; 0x290 <main+0x136>
+ 28a:	1a 14       	cp	r1, r10
+ 28c:	1b 04       	cpc	r1, r11
+ 28e:	6c f1       	brlt	.+90     	; 0x2ea <main+0x190>
+					Y_2_Player --;
+			
+				ShowRockets(Y_2_Player);
+ 290:	c5 01       	movw	r24, r10
+ 292:	0e 94 63 00 	call	0xc6	; 0xc6 <_Z11ShowRocketsi>
+				hit = hit_fail(X_ball ,Y_ball, Y_2_Player);
+ 296:	a5 01       	movw	r20, r10
+ 298:	b8 01       	movw	r22, r16
+ 29a:	ce 01       	movw	r24, r28
+ 29c:	0e 94 85 00 	call	0x10a	; 0x10a <_Z8hit_failiii>
+				if (hit == -1 )
+ 2a0:	01 96       	adiw	r24, 0x01	; 1
+ 2a2:	79 f4       	brne	.+30     	; 0x2c2 <main+0x168>
+				{
+					win_P1++;
+ 2a4:	8f ef       	ldi	r24, 0xFF	; 255
+ 2a6:	48 1a       	sub	r4, r24
+ 2a8:	58 0a       	sbc	r5, r24
+					PORTD += 0b01000000;
+ 2aa:	82 b3       	in	r24, 0x12	; 18
+ 2ac:	80 5c       	subi	r24, 0xC0	; 192
+ 2ae:	82 bb       	out	0x12, r24	; 18
+					if(win_P1 == 2 )
+ 2b0:	22 e0       	ldi	r18, 0x02	; 2
+ 2b2:	42 16       	cp	r4, r18
+ 2b4:	51 04       	cpc	r5, r1
+ 2b6:	09 f0       	breq	.+2      	; 0x2ba <main+0x160>
+ 2b8:	70 cf       	rjmp	.-288    	; 0x19a <main+0x40>
+						PORTC += 0b10000000;
+ 2ba:	85 b3       	in	r24, 0x15	; 21
+ 2bc:	80 58       	subi	r24, 0x80	; 128
+ 2be:	85 bb       	out	0x15, r24	; 21
+ 2c0:	75 cf       	rjmp	.-278    	; 0x1ac <main+0x52>
+				Y_step = +1;
+			}
+			X_ball += X_step;
+			Y_ball += Y_step;
+			
+			TurnLEDon(X_ball, Y_ball);
+ 2c2:	80 e0       	ldi	r24, 0x00	; 0
+ 2c4:	90 e0       	ldi	r25, 0x00	; 0
+ 2c6:	01 96       	adiw	r24, 0x01	; 1
+					if(win_P1 == 2 )
+						PORTC += 0b10000000;
+					break;
+				}
+			}
+			for(long i = 0 ; i < 3000; i++);
+ 2c8:	88 3b       	cpi	r24, 0xB8	; 184
+ 2ca:	2b e0       	ldi	r18, 0x0B	; 11
+ 2cc:	92 07       	cpc	r25, r18
+ 2ce:	d9 f7       	brne	.-10     	; 0x2c6 <main+0x16c>
+ 2d0:	82 cf       	rjmp	.-252    	; 0x1d6 <main+0x7c>
+			for(long i = 0 ; i < 3000; i++);
+			
+			if(X_ball<=8)
+			{
+				if((PIND & 0b00000001) == 1 && Y_1_Player<5)
+					Y_1_Player ++;
+ 2d2:	8f ef       	ldi	r24, 0xFF	; 255
+ 2d4:	c8 1a       	sub	r12, r24
+ 2d6:	d8 0a       	sbc	r13, r24
+ 2d8:	b1 cf       	rjmp	.-158    	; 0x23c <main+0xe2>
+				if((PIND & 0b00000010) == 2 && Y_1_Player>0)
+					Y_1_Player --;
+ 2da:	21 e0       	ldi	r18, 0x01	; 1
+ 2dc:	c2 1a       	sub	r12, r18
+ 2de:	d1 08       	sbc	r13, r1
+ 2e0:	b3 cf       	rjmp	.-154    	; 0x248 <main+0xee>
+					}
+			}
+			else
+			{
+				if((PIND & 0b00000100) == 4 && Y_2_Player<5)
+					Y_2_Player ++;
+ 2e2:	8f ef       	ldi	r24, 0xFF	; 255
+ 2e4:	a8 1a       	sub	r10, r24
+ 2e6:	b8 0a       	sbc	r11, r24
+ 2e8:	ce cf       	rjmp	.-100    	; 0x286 <main+0x12c>
+				if((PIND & 0b00001000) == 8 && Y_2_Player>0)
+					Y_2_Player --;
+ 2ea:	21 e0       	ldi	r18, 0x01	; 1
+ 2ec:	a2 1a       	sub	r10, r18
+ 2ee:	b1 08       	sbc	r11, r1
+ 2f0:	cf cf       	rjmp	.-98     	; 0x290 <main+0x136>
+			//if(win_P1 >= 2 || win_P2 >= 2)
+				//break;
+		}
+	}
+		
+}
+ 2f2:	80 e0       	ldi	r24, 0x00	; 0
+ 2f4:	90 e0       	ldi	r25, 0x00	; 0
+ 2f6:	df 91       	pop	r29
+ 2f8:	cf 91       	pop	r28
+ 2fa:	1f 91       	pop	r17
+ 2fc:	0f 91       	pop	r16
+ 2fe:	ff 90       	pop	r15
+ 300:	ef 90       	pop	r14
+ 302:	df 90       	pop	r13
+ 304:	cf 90       	pop	r12
+ 306:	bf 90       	pop	r11
+ 308:	af 90       	pop	r10
+ 30a:	9f 90       	pop	r9
+ 30c:	8f 90       	pop	r8
+ 30e:	7f 90       	pop	r7
+ 310:	6f 90       	pop	r6
+ 312:	5f 90       	pop	r5
+ 314:	4f 90       	pop	r4
+ 316:	3f 90       	pop	r3
+ 318:	2f 90       	pop	r2
+ 31a:	08 95       	ret
+
+0000031c <_exit>:
+ 31c:	f8 94       	cli
+
+0000031e <__stop_program>:
+ 31e:	ff cf       	rjmp	.-2      	; 0x31e <__stop_program>
